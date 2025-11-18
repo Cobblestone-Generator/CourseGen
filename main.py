@@ -1,27 +1,23 @@
-from text_extractor import extract_text
-from course_generator import generate_course
-from file_utils import download_youtube_audio, is_youtube_url
+from flask import Flask, request, jsonify
+from upload import save_uploaded_file
+from ai_processor import process_text
 
-def main():
-    print("Введите путь к файлу или ссылку на YouTube:")
-    source = input("> ").strip()
+app = Flask(name)
 
-    if is_youtube_url(source):
-        print("Скачиваю аудио с YouTube...")
-        file_path = download_youtube_audio(source)
-        print("Аудио скачано:", file_path)
-    else:
-        file_path = source
+@app.route("/upload", methods=["POST"])
+def upload():
+    if "file" not in request.files:
+        return jsonify({"error": "Файл не отправлен"}), 400
 
-    print("Извлекаю текст...")
-    text = extract_text(file_path)
+    file = request.files["file"]
+    path = save_uploaded_file(file)
 
-    print("Создаю курс...")
-    course = generate_course(text)
+    with open(path, "r", encoding="utf-8") as f:
+        text = f.read()
 
-    print("\n===== ГОТОВЫЙ КУРС =====\n")
-    print(course)
+    course = process_text(text)
+    return jsonify({"course": course})
 
 
 if name == "main":
-    main()
+    app.run(host="127.0.0.1", port=5000, debug=True)
