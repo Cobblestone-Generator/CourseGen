@@ -18,6 +18,5 @@ def upload():
     course = process_text(text)
     return jsonify({"course": course})
 
-
 if name == "main":
     app.run(host="127.0.0.1", port=5000, debug=True)
