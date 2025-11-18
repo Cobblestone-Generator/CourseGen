@@ -1,70 +1,152 @@
+> ugabuga:
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Загрузка файла</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CourseGen - Создай курс из любого видео</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
     <style>
-        body {
-            background: #111;
-            color: #eee;
-            font-family: Arial;
-            padding: 40px;
-        }
-        input[type=file] {
-            margin-top: 20px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #444;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #666;
-        }
-        #result {
-            margin-top: 40px;
-            padding: 20px;
-            white-space: pre-wrap;
-            background: #222;
-            border: 1px solid #444;
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
         }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#a3ff00",
+                        "cobblestone-blue": "#2C3E50",
+                        "icy-blue": "#AED9E0",
+                        "graphite-gray": "#7F8C8D",
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px"
+                    },
+                },
+            },
+        }
+    </script>
 </head>
-<body>
+<body class="bg-white font-display text-cobblestone-blue">
 
-<h1>Загрузка файла для превращения в учебный курс</h1>
+    <div class="flex h-auto min-h-screen w-full flex-col">
 
-<input type="file" id="fileInput">
-<br>
-<button onclick="sendFile()">Отправить</button>
+        <header class="sticky top-0 z-10 w-full border-b border-graphite-gray/20 bg-white/80 backdrop-blur-md">
+            <div class="mx-auto flex max-w-7xl items-center justify-between whitespace-nowrap px-4 py-3 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-4">
+                    <div class="h-6 w-6 text-cobblestone-blue">
+                        <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold leading-tight tracking-tight text-cobblestone-blue">
+                        CourseGen
+                    </h2>
+                </div>
 
-<div id="result"></div>
+                <nav class="hidden items-center gap-8 md:flex">
+                    <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="index.html">Главная</a>
+                    <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="my-courses.html">Мои курсы</a>
+                    <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="generator.html">Генератор</a>
+                    <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="support.html">Поддержка</a>
+                </nav>
 
-<script>
-async function sendFile() {
-    const fileInput = document.getElementById("fileInput");
-    if (!fileInput.files.length) {
-        alert("Выберите файл");
-        return;
-    }
+                <div class="flex items-center gap-2">
+                    <a href="register.html" class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-4 text-sm font-bold leading-normal tracking-wide text-cobblestone-blue transition-transform hover:scale-105">
+                        <span class="truncate">Регистрация</span>
+                    </a>
+                    <a href="login.html" class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-100 px-4 text-sm font-bold leading-normal tracking-wide text-cobblestone-blue transition-transform hover:scale-105">
 
-    const formData = new FormData();
-    formData.append("file", fileInput.files[0]);
+> ugabuga:
+<span class="truncate">Вход</span>
+                    </a>
+                </div>
+            </div>
+        </header>
 
-    const response = await fetch("http://127.0.0.1:5000/upload", {
-        method: "POST",
-        body: formData
-    });
+        <main class="flex-1 bg-white">
 
-    const data = await response.json();
+            <section class="py-16 md:py-24 text-center bg-white">
+                <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col items-center gap-6">
+                        <div class="flex flex-col gap-4">
+                            <h1 class="text-cobblestone-blue text-4xl font-bold md:text-5xl lg:text-6xl">
+                                Создай курс из любого видео — за секунды
+                            </h1>
+                            <h2 class="text-graphite-gray text-base md:text-lg max-w-2xl mx-auto">
+                                Вставь ссылку на YouTube, и мы превратим её в полноценный учебный модуль.
+                            </h2>
+                        </div>
 
-    document.getElementById("result").innerText = data.course || data.error;
-}
-</script>
+                        <div class="w-full max-w-xl mt-4">
+                            <label class="flex flex-col min-w-40 h-14 w-full">
+                                <div class="flex w-full items-stretch rounded-xl h-full shadow-sm">
+
+                                    <div class="text-graphite-gray flex border border-graphite-gray/20 bg-gray-50 items-center justify-center pl-4 rounded-l-xl border-r-0">
+                                        <span class="material-symbols-outlined">link</span>
+                                    </div>
+
+                                    <input id="ytInput"
+                                           class="form-input flex w-full min-w-0 flex-1 text-cobblestone-blue focus:ring-2 focus:ring-primary/50 border border-graphite-gray/20 bg-white h-full px-4 border-r-0 border-l-0 text-base"
+                                           placeholder="Вставь ссылку на YouTube..."/>
+
+                                    <div class="flex items-center justify-center rounded-r-xl border border-graphite-gray/20 bg-gray-50 p-1.5">
+                                        <button id="genBtn"
+                                                class="flex min-w-[84px] items-center justify-center overflow-hidden rounded-lg h-full px-5 bg-primary text-cobblestone-blue text-base font-bold tracking-wide transition-transform hover:scale-105">
+                                            <span class="truncate">Создать курс</span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.getElementById("genBtn").addEventListener("click", async () => {
+            const link = document.getElementById("ytInput").value.trim();
+
+            if (!link) {
+                alert("Вставь ссылку, герой.");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: link })
+                });
+
+                const data = await res.json();
+                console.log(data);
+                alert("Курс создан! Открой консоль браузера (F12).");
+
+            } catch (err) {
+                alert("Сервер шипит и злится. Проверь консоль.");
+                console.error(err);
+            }
+        });
+    </script>
 
 </body>
 </html>
-
