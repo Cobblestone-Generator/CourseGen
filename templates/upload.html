@@ -55,7 +55,6 @@
                         CourseGen
                     </h2>
                 </div>
-
                 <nav class="hidden items-center gap-8 md:flex">
                     <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="index.html">Главная</a>
                     <a class="text-sm font-medium text-cobblestone-blue transition-colors hover:text-primary" href="my-courses.html">Мои курсы</a>
@@ -68,16 +67,12 @@
                         <span class="truncate">Регистрация</span>
                     </a>
                     <a href="login.html" class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-100 px-4 text-sm font-bold leading-normal tracking-wide text-cobblestone-blue transition-transform hover:scale-105">
-
-> ugabuga:
 <span class="truncate">Вход</span>
                     </a>
                 </div>
             </div>
         </header>
-
         <main class="flex-1 bg-white">
-
             <section class="py-16 md:py-24 text-center bg-white">
                 <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col items-center gap-6">
@@ -89,15 +84,12 @@
                                 Вставь ссылку на YouTube, и мы превратим её в полноценный учебный модуль.
                             </h2>
                         </div>
-
                         <div class="w-full max-w-xl mt-4">
                             <label class="flex flex-col min-w-40 h-14 w-full">
                                 <div class="flex w-full items-stretch rounded-xl h-full shadow-sm">
-
                                     <div class="text-graphite-gray flex border border-graphite-gray/20 bg-gray-50 items-center justify-center pl-4 rounded-l-xl border-r-0">
                                         <span class="material-symbols-outlined">link</span>
                                     </div>
-
                                     <input id="ytInput"
                                            class="form-input flex w-full min-w-0 flex-1 text-cobblestone-blue focus:ring-2 focus:ring-primary/50 border border-graphite-gray/20 bg-white h-full px-4 border-r-0 border-l-0 text-base"
                                            placeholder="Вставь ссылку на YouTube..."/>
@@ -108,22 +100,18 @@
                                             <span class="truncate">Создать курс</span>
                                         </button>
                                     </div>
-
                                 </div>
                             </label>
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
-
     <!-- JAVASCRIPT -->
     <script>
         document.getElementById("genBtn").addEventListener("click", async () => {
             const link = document.getElementById("ytInput").value.trim();
-
             if (!link) {
                 alert("Вставь ссылку, герой.");
                 return;
@@ -146,6 +134,5 @@
             }
         });
     </script>
-
 </body>
 </html>
