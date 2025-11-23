@@ -74,14 +74,14 @@
                             <p class="mt-2 text-graphite-gray">Введите ваши данные для входа</p>
                         </div>
 
-                        <form class="space-y-6">
+                        <form id="loginForm" class="space-y-6">
                             <div>
                                 <label class="mb-2 block text-sm font-medium text-cobblestone-blue">Email адрес</label>
                                 <div class="relative">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                         <span class="material-symbols-outlined text-graphite-gray">mail</span>
                                     </div>
-                                    <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="your@email.com" type="email" required/>
+                                    <input id="email" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="your@email.com" type="email" required/>
                                 </div>
                             </div>
 
@@ -94,8 +94,8 @@
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                         <span class="material-symbols-outlined text-graphite-gray">lock</span>
                                     </div>
-                                    <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Введите пароль" type="password" required/>
-                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <input id="password" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Введите пароль" type="password" required/>
+                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('password')">
                                         <span class="material-symbols-outlined text-graphite-gray hover:text-cobblestone-blue">visibility</span>
                                     </button>
                                 </div>
@@ -123,5 +123,35 @@
             </div>
         </main>
     </div>
+    <!-- JS login functionality -->
+    <script>
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        // запомнить меня (по умолчанию не реализовано, можно через cookies)
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email, password})
+        });
+        const result = await response.json();
+        if(result.message){
+            alert(result.message);
+            window.location.href = "index.html";
+        } else {
+            alert(result.error);
+        }
+    });
+    </script>
 </body>
 </html>
