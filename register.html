@@ -74,7 +74,7 @@
                             <p class="mt-2 text-graphite-gray">Заполните форму для регистрации</p>
                         </div>
 
-                        <form class="space-y-6">
+                        <form id="regForm" class="space-y-6">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="mb-2 block text-sm font-medium text-cobblestone-blue">Имя</label>
@@ -82,7 +82,7 @@
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                             <span class="material-symbols-outlined text-graphite-gray">person</span>
                                         </div>
-                                        <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Имя" type="text" required/>
+                                        <input id="username" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Имя" type="text" required/>
                                     </div>
                                 </div>
                                 <div>
@@ -91,7 +91,7 @@
                                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                             <span class="material-symbols-outlined text-graphite-gray">person</span>
                                         </div>
-                                        <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Фамилия" type="text" required/>
+                                        <input id="surname" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Фамилия" type="text"/>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                         <span class="material-symbols-outlined text-graphite-gray">mail</span>
                                     </div>
-                                    <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="your@email.com" type="email" required/>
+                                    <input id="email" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-4 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="your@email.com" type="email" required/>
                                 </div>
                             </div>
 
@@ -112,8 +112,8 @@
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                         <span class="material-symbols-outlined text-graphite-gray">lock</span>
                                     </div>
-                                    <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Минимум 8 символов" type="password" required/>
-                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <input id="password" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Минимум 8 символов" type="password" required/>
+                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('password')">
                                         <span class="material-symbols-outlined text-graphite-gray hover:text-cobblestone-blue">visibility</span>
                                     </button>
                                 </div>
@@ -126,8 +126,8 @@
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                         <span class="material-symbols-outlined text-graphite-gray">lock</span>
                                     </div>
-                                    <input class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Повторите пароль" type="password" required/>
-                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <input id="confirm_password" class="w-full rounded-lg border border-graphite-gray/20 bg-white py-3 pl-10 pr-10 text-cobblestone-blue placeholder:text-graphite-gray focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Повторите пароль" type="password" required/>
+                                    <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('confirm_password')">
                                         <span class="material-symbols-outlined text-graphite-gray hover:text-cobblestone-blue">visibility</span>
                                     </button>
                                 </div>
@@ -160,5 +160,47 @@
             </div>
         </main>
     </div>
+    <!-- Дополнение: JS для регистрации пользователя -->
+    <script>
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value.trim();
+        // Surname - не используется сервером, можете расширить если надо
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirm_password = document.getElementById("confirm_password").value;
+
+        if(password.length < 8) {
+            alert("Пароль должен содержать минимум 8 символов");
+            return;
+        }
+        if(password !== confirm_password) {
+            alert("Пароли не совпадают");
+            return;
+        }
+
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username, email, password})
+        });
+        const result = await response.json();
+        if(result.message){
+            alert(result.message);
+            window.location.href = "login.html";
+        } else {
+            alert(result.error);
+        }
+    });
+    </script>
 </body>
 </html>
